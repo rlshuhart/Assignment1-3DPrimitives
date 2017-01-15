@@ -66,6 +66,7 @@ void draw() {
     fill(0);
     
     // Display headline at x location
+    textFont(f);
     textAlign (LEFT);
     // A specific String from the array is displayed according to the value of the "index" variable.
     text(ticker[index], x, height-20); 
