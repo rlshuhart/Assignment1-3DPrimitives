@@ -1,6 +1,7 @@
 // Dow Jones 
 // https://processing.org/reference/loadTable_.html
 // https://processing.org/tutorials/data/
+// https://processing.org/tutorials/text/
 
 // TODO
 // Add on-screen graphic
@@ -15,7 +16,7 @@ int currentRowCount = 0;
 int row;
 String[] Date;
 float[] Close;
-
+PFont f;                           // STEP 1 Declare PFont variable
 
 void setup() {
   // create 3D canvas 
@@ -27,13 +28,16 @@ void setup() {
   // initial Date and Close arrays with the number of rows
   Date = new String[Dow.getRowCount()];
   Close = new float[Dow.getRowCount()];
+  
+  f = createFont("Arial",16,true); // STEP 2 Create Font
+  
 }
 
 void draw() {
   // create background color, stroke, sphere, translation and rotation. 
   background(200);
   stroke(255, 50);
-  translate(250,250, 0);
+  translate(350,250, 0);
   rotateX(row);
   rotateY(row + 100);
   fill(54,95,152);
@@ -43,6 +47,11 @@ void draw() {
   for (int row=1; row < currentRowCount; row++){
      Date[row] = Dow.getString(row, 0);
      Close[row] = Dow.getFloat(row, 6);
+     
+  //Draw Text
+  textFont(f,16);                  // STEP 3 Specify font to be used
+  fill(0);                         // STEP 4 Specify font color 
+  text("Hello Strings!",10,100);   // STEP 5 Display Text
     
   }
 
