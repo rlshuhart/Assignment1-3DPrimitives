@@ -51,9 +51,6 @@ void setup() {
      //println(ticker[row]);
   }
   
-  // Reverse order of ticker so it scroll past to present
-  ticker = reverse(ticker);
-  
   // Find close change
   priceChange = new float[Close.length];
   pctChange = new float[Close.length];
@@ -63,6 +60,11 @@ void setup() {
       pctChange[i] = (Close[i-1] - Close[i])/Close[i] * 100;
       println(Close[i-1] + " change from " + Close[i] + " equals " + nfc(pctChange[i],2) + "%");
   }
+  
+  // Reverse order of ticker so it scroll past to present
+  ticker = reverse(ticker);
+  priceChange = reverse(priceChange);
+  pctChange = reverse(pctChange);
   
   //ticker
   f = createFont("Arial Bold",22,true); // STEP 2 Create Font
@@ -82,7 +84,14 @@ void draw() {
     textFont(f);
     textAlign (LEFT);
     // A specific String from the array is displayed according to the value of the "index" variable.
-    text(ticker[index], x, height-20); 
+    if (index==0){
+    text(ticker[index], x, height-20);     
+    } else {
+    text(ticker[index] + " " + nfc(priceChange[index-1], 2) + " (" + nfc(pctChange[index-1],2) + "%)", x, height-20);     
+    }
+    
+    
+
     
     // Decrement x
     x = x - 3;
