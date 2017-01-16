@@ -87,11 +87,14 @@ void draw() {
     if (index==0){
     text(ticker[index], x, height-20);     
     } else {
-    text(ticker[index] + " " + nfc(priceChange[index-1], 2) + " (" + nfc(pctChange[index-1],2) + "%)", x, height-20);     
+      if (priceChange[index-1] < 0){
+        fill(255,0,0);
+      } else {
+        fill(0,255,0);
+      }
+      text(ticker[index] + " " + nfc(priceChange[index-1], 2) + " (" + nfc(pctChange[index-1],2) + "%)", x, height-20);     
     }
     
-    
-
     
     // Decrement x
     x = x - 3;
