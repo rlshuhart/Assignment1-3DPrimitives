@@ -18,6 +18,7 @@ int row;
 String[] Date;
 float[] Close;
 PImage wall;
+float size;
 
 
 // ticker
@@ -32,13 +33,15 @@ void setup() {
   wall = loadImage("wall.jpg");
   
   // load data from Yahoo
-  Dow = loadTable("http://chart.finance.yahoo.com/table.csv?s=^DJI&a=0&b=12&c=2015&d=0&e=12&f=2017&g=d&ignore=.csv", "header"); 
+  Dow = loadTable("http://chart.finance.yahoo.com/table.csv?s=^DJI&a=0&b=01&c=2016&d=0&e=12&f=2017&g=d&ignore=.csv", "header"); 
   // initial currentRowCount variable with the number of rows
   currentRowCount = Dow.getRowCount();
   // initial Date and Close arrays with the number of rows
   Date = new String[Dow.getRowCount()];
   Close = new float[Dow.getRowCount()];
   ticker = new String[Dow.getRowCount()];
+ // Reverse order of close so it will go from past to present
+  Close = reverse(Close);
   
   // iterate through the rows of the table and move the values to the arrays
   for (int row=0; row < currentRowCount; row++){
@@ -84,18 +87,25 @@ void draw() {
     }
 
   // Sphere stroke, sphere, translation and rotation. 
+  // control sphere, or balloon, size by the close value
     stroke(255, 50);
     translate(250,250, 0);
     rotateX(row + 100);
     rotateY(row + 50);
     fill(54,95,152);
-    sphereDetail(row / 4);
-    sphere(100);
+    //sphereDetail(row / 4);
+    sphere(Close[row]/150);
     
 }
 
-void mousePressed(){
-  // Move down a position in the array with each mouse click
-  row++;
+void keyPressed(){
+  // Move down a position in the array with each key click
+  // 
+  if (row < ticker.length - 1){
+    row++;
+  }
+  else {
+    row = 0;
+  }
    //println(Date[row] + " ended with a close of "+ Close[row]);
   }
