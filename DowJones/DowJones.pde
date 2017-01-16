@@ -17,6 +17,8 @@ int currentRowCount = 0;
 int row;
 String[] Date;
 float[] Close;
+float[] priceChange;
+float[] pctChange;
 PImage wall;
 float size;
 
@@ -40,8 +42,10 @@ void setup() {
   Date = new String[Dow.getRowCount()];
   Close = new float[Dow.getRowCount()];
   ticker = new String[Dow.getRowCount()];
+
  // Reverse order of close so it will go from past to present
   Close = reverse(Close);
+
   
   // iterate through the rows of the table and move the values to the arrays
   for (int row=0; row < currentRowCount; row++){
@@ -51,8 +55,20 @@ void setup() {
      //println(ticker[row]);
   }
   
+  // Find close change
+  priceChange = new float[Close.length];
+  pctChange = new float[Close.length];
+  
+  for (int i = 1; i < Close.length; i++){
+      priceChange[i] = (Close[i-1] - Close[i]);
+      pctChange[i] = (Close[i-1] - Close[i])/Close[i] * 100;
+      println(Close[i-1] + " change from " + Close[i] + " equals " + nfc(pctChange[i],2) + "%");
+  }
+  
   // Reverse order of ticker so it scroll past to present
   ticker = reverse(ticker);
+  priceChange = reverse(priceChange);
+  pctChange = reverse(pctChange);
   
   //ticker
   f = createFont("Arial Bold",22,true); // STEP 2 Create Font
@@ -72,7 +88,17 @@ void draw() {
     textFont(f);
     textAlign (LEFT);
     // A specific String from the array is displayed according to the value of the "index" variable.
-    text(ticker[index], x, height-20); 
+    if (index==0){
+    text(ticker[index], x, height-20);     
+    } else {
+      if (priceChange[index-1] < 0){
+        fill(255,0,0);
+      } else {
+        fill(0,255,0);
+      }
+      text(ticker[index] + " " + nfc(priceChange[index-1], 2) + " (" + nfc(pctChange[index-1],2) + "%)", x, height-20);     
+    }
+    
     
     // Decrement x
     x = x - 3;
