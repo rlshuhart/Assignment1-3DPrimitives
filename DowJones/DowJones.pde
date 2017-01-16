@@ -17,6 +17,7 @@ int currentRowCount = 0;
 int row;
 String[] Date;
 float[] Close;
+float[] priceChange;
 PImage wall;
 
 
@@ -39,6 +40,7 @@ void setup() {
   Date = new String[Dow.getRowCount()];
   Close = new float[Dow.getRowCount()];
   ticker = new String[Dow.getRowCount()];
+
   
   // iterate through the rows of the table and move the values to the arrays
   for (int row=0; row < currentRowCount; row++){
@@ -50,6 +52,14 @@ void setup() {
   
   // Reverse order of ticker so it scroll past to present
   ticker = reverse(ticker);
+  
+  // Find close change
+  priceChange = new float[Close.length];
+  
+  for (int i = 1; i < Close.length; i++){
+      priceChange[i] = (Close[i-1] - Close[i]);
+      println(Close[i-1] + " change from " + Close[i] + " equals " + priceChange[i]);
+  }
   
   //ticker
   f = createFont("Arial Bold",22,true); // STEP 2 Create Font
