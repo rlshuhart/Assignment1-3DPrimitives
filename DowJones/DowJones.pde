@@ -18,6 +18,7 @@ int row;
 String[] Date;
 float[] Close;
 float[] priceChange;
+float[] pctChange;
 PImage wall;
 
 
@@ -55,10 +56,12 @@ void setup() {
   
   // Find close change
   priceChange = new float[Close.length];
+  pctChange = new float[Close.length];
   
   for (int i = 1; i < Close.length; i++){
       priceChange[i] = (Close[i-1] - Close[i]);
-      println(Close[i-1] + " change from " + Close[i] + " equals " + priceChange[i]);
+      pctChange[i] = (Close[i-1] - Close[i])/Close[i] * 100;
+      println(Close[i-1] + " change from " + Close[i] + " equals " + nfc(pctChange[i],2) + "%");
   }
   
   //ticker
