@@ -1,38 +1,5 @@
-// Dow Jones 
-// https://processing.org/reference/loadTable_.html
-// https://processing.org/tutorials/data/
-// https://processing.org/tutorials/text/
-// http://learningprocessing.com/examples/chp17/example-17-03-scrollingtext
-
-// TODO
-// fix balloon
-// Shift to classes
-// Move to eclipse
-
-
-// initial variables, table and arrays
-Table Dow;
-int currentRowCount = 0;
-int row;
-String[] Date;
-float[] Close;
-float[] priceChange;
-float[] pctChange;
-PImage wall;
-float size;
-
-
-// ticker
-PFont f;  
-float x; // Horizontal location
-int index = 0;
-String[] ticker;
-
-void setup() {
-  // create 3D canvas 
-  size(800,600, P3D);
-  wall = loadImage("wall.jpg");
-  
+void loadData() {
+    
   // load data from Yahoo
   Dow = loadTable("http://chart.finance.yahoo.com/table.csv?s=^DJI&a=0&b=01&c=2016&d=0&e=12&f=2017&g=d&ignore=.csv", "header"); 
   // initial currentRowCount variable with the number of rows
@@ -54,7 +21,11 @@ void setup() {
      //println(ticker[row]);
   }
   
-  // Find close change
+}
+
+void ticker() {
+  
+   // Find close change
   priceChange = new float[Close.length];
   pctChange = new float[Close.length];
   
@@ -73,17 +44,12 @@ void setup() {
   f = createFont("Arial Bold",22,true); // STEP 2 Create Font
   // Initialize ticker offscreen
   x = width;
-  
 }
 
-void draw() {
-  // create background color
-  //background(200);
-   image(wall, 0, 0);
-  // Draw Text
-    fill(0);
-    
-    // Display headline at x location
+
+void tickerMove() {
+  
+  // Display headline at x location
     textFont(f);
     textAlign (LEFT);
     // A specific String from the array is displayed according to the value of the "index" variable.
@@ -110,33 +76,5 @@ void draw() {
       // index is incremented when the current String has left the screen in order to display a new String.
       index = (index + 1) % ticker.length;
     }
-
-  // Sphere stroke, sphere, translation and rotation. 
-  // control sphere, or balloon, size by the close value
-    stroke(255, 50);
-    translate(250,row + 100, row + 10);
-    rotateX(row + 100);
-    rotateY(row + 50);
-    fill(54,95,152);
-    //sphereDetail(row / 4);
-    sphere(Close[row]/150);
- // Balloon String 
-    //noFill();
-    fill(0,0,0);
-    //stroke(0, 0, 0);
-    bezier(250, 250, 10, 10, 50, 50, 15, 80);
     
 }
-
-
-void keyPressed(){
-  // Move down a position in the array with each key click
-  // 
-  if (row < ticker.length - 1){
-    row++;
-  }
-  else {
-    row = 0;
-  }
-   //println(Date[row] + " ended with a close of "+ Close[row]);
-  }
