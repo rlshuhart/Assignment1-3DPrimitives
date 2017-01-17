@@ -1,3 +1,19 @@
+import processing.core.*; 
+import processing.data.*; 
+import processing.event.*; 
+import processing.opengl.*; 
+
+import java.util.HashMap; 
+import java.util.ArrayList; 
+import java.io.File; 
+import java.io.BufferedReader; 
+import java.io.PrintWriter; 
+import java.io.InputStream; 
+import java.io.OutputStream; 
+import java.io.IOException; 
+
+public class Dow extends PApplet {
+
 // Dow Jones 
 // https://processing.org/reference/loadTable_.html
 // https://processing.org/tutorials/data/
@@ -28,9 +44,9 @@ float x; // Horizontal location
 int index = 0;
 String[] ticker;
 
-void setup() {
+public void setup() {
   // create 3D canvas 
-  size(800,600, P3D);
+  
   wall = loadImage("wall.jpg");
   
   // load data from Yahoo
@@ -76,7 +92,7 @@ void setup() {
   
 }
 
-void draw() {
+public void draw() {
   // create background color
   //background(200);
    image(wall, 0, 0);
@@ -129,7 +145,7 @@ void draw() {
 }
 
 
-void keyPressed(){
+public void keyPressed(){
   // Move down a position in the array with each key click
   // 
   if (row < ticker.length - 1){
@@ -140,3 +156,13 @@ void keyPressed(){
   }
    //println(Date[row] + " ended with a close of "+ Close[row]);
   }
+  public void settings() {  size(800,600, P3D); }
+  static public void main(String[] passedArgs) {
+    String[] appletArgs = new String[] { "Dow" };
+    if (passedArgs != null) {
+      PApplet.main(concat(appletArgs, passedArgs));
+    } else {
+      PApplet.main(appletArgs);
+    }
+  }
+}
