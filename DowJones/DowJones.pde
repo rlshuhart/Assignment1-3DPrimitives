@@ -22,7 +22,7 @@ PImage wall;
 float size;
 
 float minClose;
-float maxClose = 20000;  //20,000 is the fixed max for now
+float maxClose;
 
 float[] reverseClose; // Shortcut so I don't have to adjust code for reversing the close price order
 
@@ -36,9 +36,11 @@ void setup() {
   // create 3D canvas 
   size(800,600, P3D);
   wall = loadImage("wall.jpg");
+  frameRate(8);
   
   // load data from Yahoo
-  Dow = loadTable("http://chart.finance.yahoo.com/table.csv?s=^DJI&a=0&b=01&c=2016&d=0&e=12&f=2017&g=d&ignore=.csv", "header"); 
+  //Dow = loadTable("http://chart.finance.yahoo.com/table.csv?s=^DJI&a=0&b=01&c=2016&d=0&e=12&f=2017&g=d&ignore=.csv", "header");
+  Dow = loadTable("./data/table.csv", "header"); // Ryan's work around of proxy  
   // initial currentRowCount variable with the number of rows
   currentRowCount = Dow.getRowCount();
   // initial Date and Close arrays with the number of rows
@@ -81,7 +83,7 @@ void setup() {
   
   // Get min and max to scale price between 0 to 1
   minClose = min(Close);
-  
+  maxClose = 20000;  //20,000 is the fixed max for now
 }
 
 void draw() {
@@ -130,12 +132,14 @@ void draw() {
     //sphereDetail(row / 4);
     //sphere(Close[row]/150);
     println(reverseClose[row] + " row: " + row);
-    sphere(((reverseClose[row]-minClose)/(maxClose-minClose))*100 + 1);
+    sphere(((reverseClose[row]-minClose)/(maxClose-minClose))*100);
  // Balloon String 
     //noFill();
     //fill(0,0,0);
     //stroke(0, 0, 0);
     //bezier(250, 250, 10, 10, 50, 50, 10, 20);
+    stroke(0);    
+    line(0, 0, 0, ((reverseClose[row]-minClose)/(maxClose-minClose))*500);
     
     row = (row % (reverseClose.length - 1)) + 1; // keeps looping through the data
     
