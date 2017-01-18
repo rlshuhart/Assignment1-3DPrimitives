@@ -21,6 +21,10 @@ float[] pctChange;
 PImage wall;
 float size;
 
+float minClose;
+float maxClose = 20000;  //20,000 is the fixed max for now
+
+float[] reverseClose; // Shortcut so I don't have to adjust code for reversing the close price order
 
 // ticker
 PFont f;  
@@ -68,11 +72,15 @@ void setup() {
   ticker = reverse(ticker);
   priceChange = reverse(priceChange);
   pctChange = reverse(pctChange);
+  reverseClose = reverse(Close);
   
   //ticker
   f = createFont("Arial Bold",22,true); // STEP 2 Create Font
   // Initialize ticker offscreen
   x = width;
+  
+  // Get min and max to scale price between 0 to 1
+  minClose = min(Close);
   
 }
 
@@ -100,7 +108,7 @@ void draw() {
     
     
     // Decrement x
-    x = x - 3;
+    x = x - 5;
   
     // If x is less than the negative width, then it is off the screen
     // textWidth() is used to calculate the width of the current String.
@@ -114,29 +122,34 @@ void draw() {
   // Sphere stroke, sphere, translation and rotation. 
   // control sphere, or balloon, size by the close value
     stroke(255, 50);
-    translate(250,row + 100, row + 10);
-    rotateX(row + 100);
-    rotateY(row + 50);
+    //translate(250,row + 200, row + 10);
+    translate(250,250);
+    //rotateX(row + 100);
+    //rotateY(row + 50);
     fill(54,95,152);
     //sphereDetail(row / 4);
-    sphere(Close[row]/150);
+    //sphere(Close[row]/150);
+    println(reverseClose[row] + " row: " + row);
+    sphere(((reverseClose[row]-minClose)/(maxClose-minClose))*100 + 1);
  // Balloon String 
     //noFill();
-    fill(0,0,0);
+    //fill(0,0,0);
     //stroke(0, 0, 0);
-    bezier(250, 250, 10, 10, 50, 50, 10, 20);
+    //bezier(250, 250, 10, 10, 50, 50, 10, 20);
+    
+    row = (row % (reverseClose.length - 1)) + 1; // keeps looping through the data
     
 }
 
 
-void keyPressed(){
-  // Move down a position in the array with each key click
-  // 
-  if (row < ticker.length - 1){
-    row++;
-  }
-  else {
-    row = 0;
-  }
-   //println(Date[row] + " ended with a close of "+ Close[row]);
-  }
+//void keyPressed(){
+//  // Move down a position in the array with each key click
+//  // 
+//  if (row < ticker.length - 1){
+//    row++;
+//  }
+//  else {
+//    row = 0;
+//  }
+//   //println(Date[row] + " ended with a close of "+ Close[row]);
+//  }
